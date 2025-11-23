@@ -70,13 +70,6 @@ Performed lightweight NLP using **NLTK**:
 * Lemmatization
 * Extracted tokens per headline
 
-### Challenges Faced in Task 1
-
-* `nltk` required additional downloads (`punkt`, `wordnet`, `stopwords`)
-* Tokenization was initially slow for the full dataset
-* Missing `"date"` column led to KeyError when resampling
-* Fixed by converting `"published"` to datetime and renaming to `"date"`
-
 ---
 
 # **TASK 2 — Stock Market Data Analysis**
@@ -94,35 +87,7 @@ Analyzed six tickers:
 
 ### 2. **Technical Indicators (Using Pandas + PyNance)**
 
-Replaced TA-Lib due to installation errors and missing `distutils` on Python 3.12+.
-
-Computed:
-
-#### **Simple Moving Average (SMA-20)**
-
-```python
-df["SMA_20"] = df["Close"].rolling(20).mean()
-```
-
-#### **Relative Strength Index (RSI-14)**
-
-Manual pandas implementation when TA-Lib failed.
-
-#### **MACD (12/26/9)**
-
-Implemented using pandas exponential moving averages.
-
-#### **Daily Returns**
-
-```python
-df["Daily_Returns"] = pn.daily_returns(df["Close"])
-```
-
-#### **Volatility (Rolling Std-Dev)**
-
-```python
-df["Volatility_20"] = df["Daily_Returns"].rolling(20).std()
-```
+used TA-Lib to find the techinal idicators (SMA, RSI and MACD).
 
 ### ✔ 3. **Visualizations**
 
@@ -133,12 +98,52 @@ For each of the six stocks, plotted:
 * Daily returns
 * Volatility
 
-### Challenges Faced in Task 2
+# **Task 3: Correlation Between News Sentiment and Stock Movements**
 
-* **TA-Lib** failed installation due to:
+## Objective
 
-  * Deprecated `distutils` on Python 3.12
-  * C-library compilation requirements
-* Switched to **pandas** implementations
-* PyNance installation required switching to GitHub version
-* Missing documentation for PyNance functions → implemented manually
+The goal of Task 3 is to analyze how financial news headlines influence stock price movements by performing sentiment analysis and correlating it with daily stock returns.
+
+## Data
+
+* **Financial News:** `raw_analyst_ratings.csv`
+  Contains news headlines, publisher info, and publication dates.
+* **Stock Prices:** CSV files from Yahoo Finance for six major stocks (AAPL, AMZN, GOOG, META, MSFT, NVDA).
+
+## Methodology
+
+1. **Date Alignment**
+
+   * Convert the `date` column in news data to datetime.
+   * Ensure that news dates align with stock trading dates.
+
+2. **Sentiment Analysis**
+
+   * Used `TextBlob` to compute polarity scores of news headlines (range: -1 negative to +1 positive).
+   * Aggregate multiple headlines per day to calculate average daily sentiment.
+
+3. **Stock Returns**
+
+   * Calculated daily returns for each stock as the percentage change in closing prices.
+
+4. **Correlation Analysis**
+
+   * Merged average daily sentiment with corresponding stock returns.
+   * Calculated the Pearson correlation coefficient between sentiment and daily returns to quantify the relationship.
+
+5. **Optional Visualization**
+
+   * Scatter plots of daily returns vs. average sentiment were created for visual inspection of correlations.
+
+## Key Insights
+
+* This analysis provides a preliminary understanding of how news sentiment may relate to stock price movements.
+* Handling multiple headlines per day is important to avoid duplicates during correlation and plotting.
+* Correlation strength varies by stock, indicating that some stocks may be more sensitive to news sentiment than others.
+
+## Libraries Used
+
+* `pandas` – data handling and merging
+* `TextBlob` – sentiment analysis
+* `matplotlib` / `seaborn` – plotting and visualization
+
