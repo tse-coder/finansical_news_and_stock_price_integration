@@ -1,6 +1,6 @@
 
 
-# **TenX Week 1 — Tasks 1 & 2 (News + Stocks Analysis)**
+# **TenX Week 1 **
 
 This project contains the work completed for Week 1 of the TenX program.
 The goal was to perform exploratory data analysis (EDA) on **news headlines** and **market data** from six major tech stocks.
