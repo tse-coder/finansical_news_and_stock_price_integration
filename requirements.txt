@@ -1,4 +1,5 @@
 pandas
 matplotlib
 nltk
-talib
+pynance
+TA-Lib
